@@ -25,12 +25,12 @@ Maven template
 	<dependency>
 		<groupId>com.jaouan</groupId>
 		<artifactId>kerandroid</artifactId>
-		<version>0.0.0</version>
+		<version>0.0.1</version>
 	</dependency>
 </dependencies>
 ```
 Or download JAR at
-https://github.com/Jaouan/mvn-repo/blob/master/com/jaouan/kerandroid/0.0.0/kerandroid-0.0.0.jar
+https://github.com/Jaouan/mvn-repo/blob/master/com/jaouan/kerandroid/0.0.1/kerandroid-0.0.1.jar
 
 # Using examples
 ## Activity
