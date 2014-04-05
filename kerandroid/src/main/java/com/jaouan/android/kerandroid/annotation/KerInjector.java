@@ -20,6 +20,7 @@ public @interface KerInjector {
 
 	/**
 	 * Get KerInjector's class to use for injection.
+	 * 
 	 * @return KerInjector implementation's class to use for injection
 	 */
 	Class<? extends AbstractKerInjector> value();

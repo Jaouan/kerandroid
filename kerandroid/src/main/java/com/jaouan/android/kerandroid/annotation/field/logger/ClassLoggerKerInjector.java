@@ -23,27 +23,27 @@ public class ClassLoggerKerInjector extends AbstractKerInjector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void inject(Field field, Activity activity, Bundle savedInstanceState) throws Exception {
+	public void inject(final Field field, final Activity activity, final Bundle savedInstanceState) throws Exception {
 		// - Inject logger.
-		injectLogger(field, activity);
+		this.injectLogger(field, activity);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void inject(Field field, Fragment fragment, Bundle savedInstanceState) throws Exception {
+	public void inject(final Field field, final Fragment fragment, final Bundle savedInstanceState) throws Exception {
 		// - Inject logger.
-		injectLogger(field, fragment);
+		this.injectLogger(field, fragment);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void inject(Field field, android.support.v4.app.Fragment fragment, Bundle savedInstanceState) throws Exception {
+	public void inject(final Field field, final android.support.v4.app.Fragment fragment, final Bundle savedInstanceState) throws Exception {
 		// - Inject logger.
-		injectLogger(field, fragment);
+		this.injectLogger(field, fragment);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class ClassLoggerKerInjector extends AbstractKerInjector {
 	 * @param object
 	 *            Input object.
 	 */
-	private void injectLogger(Field field, Object object) throws IllegalAccessException {
+	private void injectLogger(final Field field, final Object object) throws IllegalAccessException {
 		// - Get logger from factory.
 		final Logger logger = LoggerFactory.getLogger(object.getClass());
 

@@ -75,10 +75,10 @@ public class AbstractKerInjector {
 	 *            Input saved instance state.
 	 * @return TRUE if injectable.
 	 */
-	public boolean isInjectable(Activity activity, Bundle savedInstanceState) {
+	public boolean isInjectable(final Activity activity, final Bundle savedInstanceState) {
 		return true;
 	}
-	
+
 	/**
 	 * Check if inputs parameters allow injection.
 	 * 
@@ -88,7 +88,7 @@ public class AbstractKerInjector {
 	 *            Input saved instance state.
 	 * @return TRUE if injectable.
 	 */
-	public boolean isInjectable(Fragment fragment, Bundle savedInstanceState) {
+	public boolean isInjectable(final Fragment fragment, final Bundle savedInstanceState) {
 		return true;
 	}
 
@@ -101,7 +101,7 @@ public class AbstractKerInjector {
 	 *            Input saved instance state.
 	 * @return TRUE if injectable.
 	 */
-	public boolean isInjectable(android.support.v4.app.Fragment fragment, Bundle savedInstanceState) {
+	public boolean isInjectable(final android.support.v4.app.Fragment fragment, final Bundle savedInstanceState) {
 		return true;
 	}
 
@@ -112,8 +112,8 @@ public class AbstractKerInjector {
 	 *            Field.
 	 * @return Cached object (null if not cached).
 	 */
-	protected Object getFromCache(Field field) {
-		return cache.get(field);
+	protected Object getFromCache(final Field field) {
+		return this.cache.get(field);
 	}
 
 	/**
@@ -124,8 +124,8 @@ public class AbstractKerInjector {
 	 * @param object
 	 *            Object to cache.
 	 */
-	protected void putToCache(Field field, Object object) {
-		cache.put(field, object);
+	protected void putToCache(final Field field, final Object object) {
+		this.cache.put(field, object);
 	}
 
 }

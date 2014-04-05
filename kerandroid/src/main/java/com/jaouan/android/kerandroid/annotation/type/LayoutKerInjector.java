@@ -20,15 +20,15 @@ public class LayoutKerInjector extends AbstractKerInjector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void inject(Field field, Activity activity, Bundle savedInstanceState) throws Exception {
+	public void inject(final Field field, final Activity activity, final Bundle savedInstanceState) throws Exception {
 		// - Read annotation's value from cache if exists.
-		Integer value = (Integer) getFromCache(field);
+		Integer value = (Integer) this.getFromCache(field);
 		if (null == value) {
 			// - Retrieve layout annotation.
 			final Layout layout = activity.getClass().getAnnotation(Layout.class);
 			value = layout.value();
 		}
-		
+
 		// - Set activity's content view.
 		activity.setContentView(value);
 	}

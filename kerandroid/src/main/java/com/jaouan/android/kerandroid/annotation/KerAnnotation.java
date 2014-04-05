@@ -54,11 +54,11 @@ public class KerAnnotation {
 
 			try {
 				// - Retrieve it KerInjector.
-				kerInjectors = retrieveKerInjector(kerAnnotationClass);
+				kerInjectors = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
 
 				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
 				if (kerInjectors.isInjectable(activity, savedInstanceState)) {
-					for (final Field field : retrieveAllFields(activity)) {
+					for (final Field field : KerAnnotation.retrieveAllFields(activity)) {
 						if (field.isAnnotationPresent(kerAnnotationClass)) {
 							try {
 								kerInjectors.inject(field, activity, savedInstanceState);
@@ -95,11 +95,11 @@ public class KerAnnotation {
 
 			try {
 				// - Retrieve it KerInjector.
-				kerAnnotationInjector = retrieveKerInjector(kerAnnotationClass);
+				kerAnnotationInjector = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
 
 				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
 				if (kerAnnotationInjector.isInjectable(fragment, savedInstanceState)) {
-					for (final Field field : retrieveAllFields(fragment)) {
+					for (final Field field : KerAnnotation.retrieveAllFields(fragment)) {
 						if (field.isAnnotationPresent(kerAnnotationClass)) {
 							try {
 								kerAnnotationInjector.inject(field, fragment, savedInstanceState);
@@ -136,11 +136,11 @@ public class KerAnnotation {
 
 			try {
 				// - Retrieve it KerInjector.
-				kerAnnotationInjector = retrieveKerInjector(kerAnnotationClass);
+				kerAnnotationInjector = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
 
 				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
 				if (kerAnnotationInjector.isInjectable(fragment, savedInstanceState)) {
-					for (final Field field : retrieveAllFields(fragment)) {
+					for (final Field field : KerAnnotation.retrieveAllFields(fragment)) {
 						if (field.isAnnotationPresent(kerAnnotationClass)) {
 							try {
 								kerAnnotationInjector.inject(field, fragment, savedInstanceState);
@@ -165,12 +165,12 @@ public class KerAnnotation {
 	 *            Annotation class.
 	 * @return Annotation's KerInjector.
 	 */
-	public static AbstractKerInjector retrieveKerInjector(Class<? extends Annotation> annotationClass) throws InstantiationException, IllegalAccessException {
+	public static AbstractKerInjector retrieveKerInjector(final Class<? extends Annotation> annotationClass) throws InstantiationException, IllegalAccessException {
 		AbstractKerInjector kerInjector = null;
 
 		// - Retrieve remembered KerInjector instance if exists.
-		if (kerInstances.containsKey(annotationClass)) {
-			kerInjector = kerInstances.get(annotationClass);
+		if (KerAnnotation.kerInstances.containsKey(annotationClass)) {
+			kerInjector = KerAnnotation.kerInstances.get(annotationClass);
 		}
 		// - Else instantiate it if necessary
 		else {
@@ -182,7 +182,7 @@ public class KerAnnotation {
 			kerInjector = kerInjectorClass.newInstance();
 
 			// - Remember it.
-			kerInstances.put(annotationClass, kerInjector);
+			KerAnnotation.kerInstances.put(annotationClass, kerInjector);
 		}
 
 		return kerInjector;
@@ -240,8 +240,8 @@ public class KerAnnotation {
 		Field[] fieldsArray = null;
 
 		// - Retrieve fields array from cache if exists.
-		if (fieldsCache.containsKey(object.getClass())) {
-			fieldsArray = fieldsCache.get(object.getClass());
+		if (KerAnnotation.fieldsCache.containsKey(object.getClass())) {
+			fieldsArray = KerAnnotation.fieldsCache.get(object.getClass());
 		}
 		// - Else get fields and cache them.
 		else {
@@ -263,7 +263,7 @@ public class KerAnnotation {
 			fieldsArray = fields.toArray(new Field[0]);
 
 			// - Cache array.
-			fieldsCache.put(object.getClass(), fieldsArray);
+			KerAnnotation.fieldsCache.put(object.getClass(), fieldsArray);
 		}
 
 		return fieldsArray;

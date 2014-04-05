@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.jaouan.android.kerandroid.annotation.AbstractKerInjector;
 import com.jaouan.android.kerandroid.exception.KerException;
@@ -23,18 +23,27 @@ public class InstanceStateKerInjector extends AbstractKerInjector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void inject(Field field, Activity activity, Bundle savedInstanceState) throws Exception {
+	public void inject(final Field field, final Activity activity, final Bundle savedInstanceState) throws Exception {
 		// - Inject instance state.
-		injectInstanceState(field, activity, savedInstanceState);
+		this.injectInstanceState(field, activity, savedInstanceState);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void inject(Field field, Fragment fragment, Bundle savedInstanceState) throws Exception {
+	public void inject(final Field field, final Fragment fragment, final Bundle savedInstanceState) throws Exception {
 		// - Inject instance state.
-		injectInstanceState(field, fragment, savedInstanceState);
+		this.injectInstanceState(field, fragment, savedInstanceState);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void inject(final Field field, final android.support.v4.app.Fragment fragment, final Bundle savedInstanceState) throws Exception {
+		// - Inject instance state.
+		this.injectInstanceState(field, fragment, savedInstanceState);
 	}
 
 	/**
@@ -47,9 +56,9 @@ public class InstanceStateKerInjector extends AbstractKerInjector {
 	 * @param savedInstanceState
 	 *            Saved instance state.
 	 */
-	private void injectInstanceState(Field field, Object object, Bundle savedInstanceState) throws Exception {
+	private void injectInstanceState(final Field field, final Object object, final Bundle savedInstanceState) throws Exception {
 		// - Retrieve field's name.
-		final String fieldName = getFieldId(object, field);
+		final String fieldName = InstanceStateKerInjector.getFieldId(object, field);
 
 		// - Set fieldName key's value to field.
 		if (!field.isAccessible()) {
@@ -62,7 +71,7 @@ public class InstanceStateKerInjector extends AbstractKerInjector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isInjectable(Activity activity, Bundle savedInstanceState) {
+	public boolean isInjectable(final Activity activity, final Bundle savedInstanceState) {
 		return null != savedInstanceState;
 	}
 
@@ -70,7 +79,15 @@ public class InstanceStateKerInjector extends AbstractKerInjector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isInjectable(Fragment fragment, Bundle savedInstanceState) {
+	public boolean isInjectable(final android.support.v4.app.Fragment fragment, final Bundle savedInstanceState) {
+		return null != savedInstanceState;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isInjectable(final Fragment fragment, final Bundle savedInstanceState) {
 		return null != savedInstanceState;
 	}
 
@@ -86,9 +103,9 @@ public class InstanceStateKerInjector extends AbstractKerInjector {
 	 * @param outState
 	 *            Out bundle.
 	 */
-	public static void saveInstanceState(Field field, Object object, Bundle outState) throws KerException {
+	public static void saveInstanceState(final Field field, final Object object, final Bundle outState) throws KerException {
 		// - Retrieve field's name.
-		final String fieldName = getFieldId(object, field);
+		final String fieldName = InstanceStateKerInjector.getFieldId(object, field);
 
 		try {
 			// - Save field's value as serializable in bundle.
@@ -106,7 +123,7 @@ public class InstanceStateKerInjector extends AbstractKerInjector {
 	 *            Field.
 	 * @return Unique field id.
 	 */
-	private static String getFieldId(Object object, Field field) {
+	private static String getFieldId(final Object object, final Field field) {
 		return object.getClass().getCanonicalName() + "." + field.getName();
 	}
 

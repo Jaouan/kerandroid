@@ -23,11 +23,16 @@ public class KerException extends Exception {
 	 *            Cause.
 	 */
 	public KerException(final String message, final Throwable cause) {
-		super(message, cause);cause.printStackTrace();
-		
+		super(message, cause);
 	}
 
-	public KerException(String message) {
+	/**
+	 * KerException's constructor.
+	 * 
+	 * @param message
+	 *            Message.
+	 */
+	public KerException(final String message) {
 		super(message);
 	}
 }
