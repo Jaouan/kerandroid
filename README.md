@@ -11,7 +11,8 @@ dependencies {
 	compile group: 'com.jaouan', name: 'kerandroid', version: '0.0.0'
 }
 ```
-Or download JAR at https://github.com/Jaouan/mvn-repo/blob/master/com/jaouan/kerandroid/0.0.0/kerandroid-0.0.0.jar
+Or download JAR at...
+https://github.com/Jaouan/mvn-repo/blob/master/com/jaouan/kerandroid/0.0.0/kerandroid-0.0.0.jar
 
 # Using examples
 ## Activity
