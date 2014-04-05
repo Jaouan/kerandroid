@@ -138,7 +138,7 @@ KerAndroid uses reflection in order to inject values in object's fields. This so
 ## Cache datas to make injection less costly
 KerAndroid caches annotations' values in order to avoid the repetition of slow works.
 ## KerAndroid vs "classic" solution
-Here a performance comparison (executed on Samsung GT-N8010) :
+Here a performance comparison (tested on Samsung GT-N8010) :
  - Injecting an activity/fragment that contains 20 views and 20 instance states to inject takes ~0.5ms (no significant differences with "classic" solution).
  - Injecting 10 times the same activity (400 injections) takes ~5ms, while it takes ~3ms with "classic" solution.
  - Injecting 10 000 times the same activity (400 000 injections) takes ~4.3s at first execution then ~3.5s, while it takes only ~1s with "classic" solution.
