@@ -8,7 +8,7 @@ repositories {
 	maven { url "https://github.com/Jaouan/mvn-repo/raw/master" }
 }
 dependencies {
-	compile group: 'com.jaouan', name: 'kerandroid', version: '0.0.0'
+	compile 'com.jaouan:kerandroid:+'
 }
 ```
 Or download JAR at
