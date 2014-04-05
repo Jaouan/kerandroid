@@ -11,6 +11,24 @@ dependencies {
 	compile 'com.jaouan:kerandroid:+'
 }
 ```
+
+Maven template
+```
+<repositories>
+	<repository>
+		<id>jaouan-repo</id>
+		<name>Jaouan repository</name>
+		<url>https://github.com/Jaouan/mvn-repo/raw/master</url>
+	</repository>
+</repositories>
+<dependencies>
+	<dependency>
+		<groupId>com.jaouan</groupId>
+		<artifactId>kerandroid</artifactId>
+		<version>0.0.0</version>
+	</dependency>
+</dependencies>
+```
 Or download JAR at
 https://github.com/Jaouan/mvn-repo/blob/master/com/jaouan/kerandroid/0.0.0/kerandroid-0.0.0.jar
 
