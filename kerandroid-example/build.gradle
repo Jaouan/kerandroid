@@ -1,4 +1,34 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:+'
+    }
+}
+
 apply plugin: 'android'
+// apply plugin: 'eclipse'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+sourceSets {
+  main {
+    compileClasspath += configurations.compile
+  }
+  test {
+    compileClasspath += configurations.compile
+    compileClasspath += configurations.testCompile
+  }
+}
+
+// eclipse {
+//   classpath {
+//     plusConfigurations += configurations.compile
+//     plusConfigurations += configurations.testCompile
+//   }
+// }
 
 android {
     compileSdkVersion 19
@@ -19,14 +49,16 @@ android {
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
     maven { url "https://github.com/Jaouan/mvn-repo/raw/master" }
 }
 
 dependencies {
-    compile('com.jaouan:kerandroid:+'){
-      exclude group: 'com.google.android'
-    }
-    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.jaouan:kerandroid:0.0.1'
+	compile 'com.google.android:support-v4:+'
+	compile 'org.slf4j:slf4j-api:+'
+	compile 'com.github.tony19:logback-android-classic:+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+  
+    testCompile 'com.google.android:android-test:+'
 }
