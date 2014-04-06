@@ -10,6 +10,7 @@ import com.jaouan.android.kerandroid.exception.KerException;
 
 /**
  * 10 000 iterations (20 views, 20 instance states) testMassiveNoInject() : ~950ms
+ * 10 000 iterations (40 listeners) testMassiveNoHandle() : ~3000ms
  */
 public class NoKerAnnotationTest extends android.test.ActivityUnitTestCase<BigNativeActivity> {
 
@@ -30,14 +31,30 @@ public class NoKerAnnotationTest extends android.test.ActivityUnitTestCase<BigNa
 	public void testMassiveNoInject() throws KerException {
 		final Bundle bundle = new Bundle();
 		activity.onSaveInstanceState(bundle);
+		for (int u = 0; u < 10; u++) {
+			final long startTime = System.currentTimeMillis();
 
-		final long startTime = System.currentTimeMillis();
+			for (int i = 0; i < 10000; i++) {
+				activity.findViews();
+				activity.restoreInstanceState(bundle);
+			}
 
-		for (int i = 0; i < 10000; i++) {
-			activity.findViews();
-			activity.restoreInstanceState(bundle);
+			Log.e("timer", "testMassiveNoInject() : " + (System.currentTimeMillis() - startTime) + "ms");
 		}
+	}
 
-		Log.e("timer", "testMassiveNoInject() : " + (System.currentTimeMillis() - startTime) + "ms");
+	public void testMassiveNoHandle() throws KerException {
+		final Bundle bundle = new Bundle();
+		activity.onSaveInstanceState(bundle);
+
+		for (int u = 0; u < 10; u++) {
+			final long startTime = System.currentTimeMillis();
+
+			for (int i = 0; i < 10000; i++) {
+				activity.bindViews();
+			}
+
+			Log.e("timer", "testMassiveNoHandle() : " + (System.currentTimeMillis() - startTime) + "ms");
+		}
 	}
 }

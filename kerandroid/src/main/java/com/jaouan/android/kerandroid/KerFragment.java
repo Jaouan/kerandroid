@@ -11,6 +11,9 @@ import com.jaouan.android.kerandroid.annotation.KerAnnotation;
 import com.jaouan.android.kerandroid.annotation.field.instancestate.InstanceState;
 import com.jaouan.android.kerandroid.annotation.field.logger.ClassLogger;
 import com.jaouan.android.kerandroid.annotation.field.viewbyid.FindViewById;
+import com.jaouan.android.kerandroid.annotation.method.check.CheckedChange;
+import com.jaouan.android.kerandroid.annotation.method.click.Click;
+import com.jaouan.android.kerandroid.annotation.method.text.TextChange;
 import com.jaouan.android.kerandroid.exception.KerException;
 
 /**
@@ -69,6 +72,13 @@ public class KerFragment extends Fragment {
 		try {
 			// - Inject views.
 			KerAnnotation.inject(this, null, FindViewById.class);
+			
+			// - Handle...
+			KerAnnotation.handle(this, //
+					Click.class, // ... view click event, ...
+					CheckedChange.class, // ... checked change event, ...
+					TextChange.class // ... text changed event.
+					);
 		} catch (final KerException kerException) {
 			this.onKerException(kerException);
 		}

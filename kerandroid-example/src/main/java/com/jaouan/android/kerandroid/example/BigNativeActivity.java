@@ -3,13 +3,19 @@ package com.jaouan.android.kerandroid.example;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 /**
- * onCreate() (first) : 60-70ms
- * onCreate() (after rotation) : 15-25ms
- * onSaveInstanceState() : 0-1ms
+ * onCreate() (first) : 60-70ms onCreate() (after rotation) : 15-25ms onSaveInstanceState() : 0-1ms
  */
 public class BigNativeActivity extends FragmentActivity {
 
@@ -61,18 +67,18 @@ public class BigNativeActivity extends FragmentActivity {
 		final long startTime = System.currentTimeMillis();
 
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_simple);
-		
+
 		findViews();
 
 		restoreInstanceState(savedInstanceState);
-		
+
 		Log.d("timer", "onCreate() : " + (System.currentTimeMillis() - startTime) + "ms");
 	}
 
 	public void restoreInstanceState(final Bundle savedInstanceState) {
-		if(null != savedInstanceState){
+		if (null != savedInstanceState) {
 			str1 = savedInstanceState.getString("str1");
 			str2 = savedInstanceState.getString("str2");
 			str3 = savedInstanceState.getString("str3");
@@ -122,9 +128,9 @@ public class BigNativeActivity extends FragmentActivity {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		final long startTime = System.currentTimeMillis();
-	
+
 		super.onSaveInstanceState(outState);
-		
+
 		outState.putString("str1", str1);
 		outState.putString("str2", str2);
 		outState.putString("str3", str3);
@@ -145,8 +151,43 @@ public class BigNativeActivity extends FragmentActivity {
 		outState.putString("str18", str18);
 		outState.putString("str19", str19);
 		outState.putString("str20", str20);
-		
+
 		Log.d("timer", "onSaveInstanceState() : " + (System.currentTimeMillis() - startTime) + "ms");
+	}
+
+	public void bindViews() {
+		for (int i = 0; i < 10; i++) {
+			findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+				}
+			});
+
+			((EditText) findViewById(R.id.editText1)).addTextChangedListener(new TextWatcher() {
+				@Override
+				public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				}
+
+				@Override
+				public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				}
+
+				@Override
+				public void afterTextChanged(Editable arg0) {
+				}
+			});
+			
+			((RadioButton)findViewById(R.id.radioButton1)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				}
+			});
+			((RadioButton)findViewById(R.id.radioButton2)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				}
+			});
+		}
 	}
 
 }

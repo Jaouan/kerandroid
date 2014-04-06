@@ -2,17 +2,20 @@ package com.jaouan.android.kerandroid.example;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jaouan.android.kerandroid.KerFragmentActivity;
 import com.jaouan.android.kerandroid.annotation.field.instancestate.InstanceState;
 import com.jaouan.android.kerandroid.annotation.field.viewbyid.FindViewById;
+import com.jaouan.android.kerandroid.annotation.method.check.CheckedChange;
+import com.jaouan.android.kerandroid.annotation.method.click.Click;
+import com.jaouan.android.kerandroid.annotation.method.text.TextChange;
 import com.jaouan.android.kerandroid.annotation.type.Layout;
 
 /**
- * onCreate() (first) : 70-80ms
- * onCreate() (after rotation) : 15-30ms
- * onSaveInstanceState() : 0-1ms
+ * onCreate() (first) : 70-80ms onCreate() (after rotation) : 15-30ms onSaveInstanceState() : 0-1ms
  */
 @Layout(R.layout.activity_simple)
 public class BigKerActivity extends KerFragmentActivity {
@@ -57,7 +60,6 @@ public class BigKerActivity extends KerFragmentActivity {
 	protected String str19 = "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc";
 	@InstanceState
 	protected String str20 = "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc";
-
 
 	@FindViewById(value = R.id.helloWorldTextView)
 	protected TextView textView1;
@@ -112,10 +114,150 @@ public class BigKerActivity extends KerFragmentActivity {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		final long startTime = System.currentTimeMillis();
-	
+
 		super.onSaveInstanceState(outState);
-		
+
 		Log.d("timer", "onSaveInstanceState() : " + (System.currentTimeMillis() - startTime) + "ms");
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick1(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange1(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked1(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick2(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange2(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked2(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick3(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange3(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked4(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick4(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange5(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked5(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick5(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange6(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked6(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick6(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange7(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked7(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick7(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange8(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked8(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick8(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange9(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked9(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick9(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
+	}
+
+	@CheckedChange({ R.id.radioButton1, R.id.radioButton2 })
+	protected void checkedChange10(final View view, final boolean value) {
+		Toast.makeText(this, "Radio changed.", Toast.LENGTH_LONG).show();
+	}
+
+	@TextChange(R.id.editText1)
+	protected void buttonClicked10(final String text) {
+		Toast.makeText(this, "Text changed : " + text, Toast.LENGTH_LONG).show();
+	}
+
+	@Click(R.id.button1)
+	protected void buttonClick10(final View view) {
+		Toast.makeText(this, "Button clicked.", Toast.LENGTH_LONG).show();
 	}
 
 }

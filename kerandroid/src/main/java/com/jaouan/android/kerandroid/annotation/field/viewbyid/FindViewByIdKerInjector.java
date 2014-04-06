@@ -23,16 +23,7 @@ public class FindViewByIdKerInjector extends AbstractKerInjector {
 	@Override
 	public void inject(final Field field, final Activity activity, final Bundle savedInstanceState) throws Exception {
 		// - Read annotation's value from cache if exists.
-		Integer value = (Integer) this.getFromCache(field);
-		if (null == value) {
-			// - Find view by id.
-			final FindViewById findViewById = field.getAnnotation(FindViewById.class);
-			value = findViewById.value();
-			this.putToCache(field, value);
-
-			// - Enable field access.
-			field.setAccessible(true);
-		}
+		Integer value = getAnnotationValue(field);
 
 		// - Set field value.
 		field.set(activity, activity.findViewById(value));
@@ -43,17 +34,8 @@ public class FindViewByIdKerInjector extends AbstractKerInjector {
 	 */
 	@Override
 	public void inject(final Field field, final Fragment fragment, final Bundle savedInstanceState) throws Exception {
-		// - Read annotation's value from cache if exists.
-		Integer value = (Integer) this.getFromCache(field);
-		if (null == value) {
-			// - Find view by id.
-			final FindViewById findViewById = field.getAnnotation(FindViewById.class);
-			value = findViewById.value();
-			this.putToCache(field, value);
-
-			// - Enable field access.
-			field.setAccessible(true);
-		}
+		// - Get annotation value.
+		Integer value = getAnnotationValue(field);
 
 		// - Set field value.
 		field.set(fragment, fragment.getView().findViewById(value));
@@ -64,7 +46,21 @@ public class FindViewByIdKerInjector extends AbstractKerInjector {
 	 */
 	@Override
 	public void inject(final Field field, final android.support.v4.app.Fragment fragment, final Bundle savedInstanceState) throws Exception {
-		// - Read annotation's value from cache if exists.
+		// - Get annotation value.
+		Integer value = getAnnotationValue(field);
+
+		// - Set field value.
+		field.set(fragment, fragment.getView().findViewById(value));
+	}
+
+	/**
+	 * Get annotation value.
+	 * 
+	 * @param field
+	 *            Field.
+	 * @return Annotation value.
+	 */
+	private Integer getAnnotationValue(final Field field) {
 		Integer value = (Integer) this.getFromCache(field);
 		if (null == value) {
 			// - Find view by id.
@@ -75,9 +71,7 @@ public class FindViewByIdKerInjector extends AbstractKerInjector {
 			// - Enable field access.
 			field.setAccessible(true);
 		}
-
-		// - Set field value.
-		field.set(fragment, fragment.getView().findViewById(value));
+		return value;
 	}
 
 }

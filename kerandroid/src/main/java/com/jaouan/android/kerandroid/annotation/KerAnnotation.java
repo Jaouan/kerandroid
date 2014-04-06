@@ -2,6 +2,7 @@ package com.jaouan.android.kerandroid.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,9 +32,19 @@ public class KerAnnotation {
 	private static Map<Class<?>, Field[]> fieldsCache = new HashMap<Class<?>, Field[]>();
 
 	/**
+	 * Methods cache (avoid methods retrieving for each injection).
+	 */
+	private static Map<Class<?>, Method[]> methodsCache = new HashMap<Class<?>, Method[]>();
+
+	/**
 	 * KerInjectors map (avoid KerInjector instantiating for each injection).
 	 */
-	private static Map<Class<? extends Annotation>, AbstractKerInjector> kerInstances = new HashMap<Class<? extends Annotation>, AbstractKerInjector>();
+	private static Map<Class<? extends Annotation>, AbstractKerInjector> kerInjectorInstances = new HashMap<Class<? extends Annotation>, AbstractKerInjector>();
+
+	/**
+	 * KerHandlers map (avoid KerInjector instantiating for each handle).
+	 */
+	private static Map<Class<? extends Annotation>, AbstractKerHandler> kerHandlerInstances = new HashMap<Class<? extends Annotation>, AbstractKerHandler>();
 
 	/**
 	 * Inject fields of an activity.
@@ -47,21 +58,24 @@ public class KerAnnotation {
 	 */
 	@SafeVarargs
 	public static void inject(final Activity activity, final Bundle savedInstanceState, final Class<? extends Annotation>... annotationClasses) throws KerException {
+		// - Retrieve object's fields.
+		final Field[] objectFields = KerAnnotation.retrieveAllFields(activity);
+
 		// - For each annotations.
 		for (final Class<? extends Annotation> kerAnnotationClass : annotationClasses) {
 
-			AbstractKerInjector kerInjectors;
+			AbstractKerInjector kerInjector;
 
 			try {
 				// - Retrieve it KerInjector.
-				kerInjectors = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
+				kerInjector = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
 
 				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
-				if (kerInjectors.isInjectable(activity, savedInstanceState)) {
-					for (final Field field : KerAnnotation.retrieveAllFields(activity)) {
+				if (kerInjector.isInjectable(activity, savedInstanceState)) {
+					for (final Field field : objectFields) {
 						if (field.isAnnotationPresent(kerAnnotationClass)) {
 							try {
-								kerInjectors.inject(field, activity, savedInstanceState);
+								kerInjector.inject(field, activity, savedInstanceState);
 							} catch (final Throwable cause) {
 								throw new KerException("Unable to inject field " + field.getName() + " annotated with " + kerAnnotationClass.getName(), cause);
 							}
@@ -71,6 +85,48 @@ public class KerAnnotation {
 
 			} catch (final Throwable cause) {
 				throw new KerException("Unable to inject fields annotated with " + kerAnnotationClass.getName(), cause);
+			}
+
+		}
+	}
+
+	/**
+	 * Handles methods of an activity.
+	 * 
+	 * @param activity
+	 *            Activity.
+	 * @param annotationClasses
+	 *            Annotations classes concerned by handle.
+	 */
+	@SafeVarargs
+	public static void handle(final Activity activity, final Class<? extends Annotation>... annotationClasses) throws KerException {
+		// - Retrieve object's methods.
+		final Method[] objectMethods = KerAnnotation.retrieveAllMethods(activity);
+
+		// - For each annotations.
+		for (final Class<? extends Annotation> kerAnnotationClass : annotationClasses) {
+
+			AbstractKerHandler kerHandler;
+
+			try {
+				// - Retrieve it KerHandler.
+				kerHandler = KerAnnotation.retrieveKerHandler(kerAnnotationClass);
+
+				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
+				if (kerHandler.isHandleable(activity)) {
+					for (final Method method : objectMethods) {
+						if (method.isAnnotationPresent(kerAnnotationClass)) {
+							try {
+								kerHandler.handle(method, activity);
+							} catch (final Throwable cause) {
+								throw new KerException("Unable to handle method " + method.getName() + " annotated with " + kerAnnotationClass.getName(), cause);
+							}
+						}
+					}
+				}
+
+			} catch (final Throwable cause) {
+				throw new KerException("Unable to handle method annotated with " + kerAnnotationClass.getName(), cause);
 			}
 
 		}
@@ -88,21 +144,24 @@ public class KerAnnotation {
 	 */
 	@SafeVarargs
 	public static void inject(final Fragment fragment, final Bundle savedInstanceState, final Class<? extends Annotation>... kerAnnotationClasses) throws KerException {
+		// - Retrieve object's fields.
+		final Field[] objectFields = KerAnnotation.retrieveAllFields(fragment);
+
 		// - For each annotations.
 		for (final Class<? extends Annotation> kerAnnotationClass : kerAnnotationClasses) {
 
-			AbstractKerInjector kerAnnotationInjector;
+			AbstractKerInjector kerInjector;
 
 			try {
 				// - Retrieve it KerInjector.
-				kerAnnotationInjector = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
+				kerInjector = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
 
 				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
-				if (kerAnnotationInjector.isInjectable(fragment, savedInstanceState)) {
-					for (final Field field : KerAnnotation.retrieveAllFields(fragment)) {
+				if (kerInjector.isInjectable(fragment, savedInstanceState)) {
+					for (final Field field : objectFields) {
 						if (field.isAnnotationPresent(kerAnnotationClass)) {
 							try {
-								kerAnnotationInjector.inject(field, fragment, savedInstanceState);
+								kerInjector.inject(field, fragment, savedInstanceState);
 							} catch (final Throwable cause) {
 								throw new KerException("Unable to inject field " + field.getName() + " annotated with " + kerAnnotationClass.getName(), cause);
 							}
@@ -112,6 +171,48 @@ public class KerAnnotation {
 
 			} catch (final Throwable cause) {
 				throw new KerException("Unable to inject fields annotated with " + kerAnnotationClass.getName(), cause);
+			}
+
+		}
+	}
+
+	/**
+	 * Handles methods of a fragment.
+	 * 
+	 * @param fragment
+	 *            Fragment.
+	 * @param annotationClasses
+	 *            Annotations classes concerned by handle.
+	 */
+	@SafeVarargs
+	public static void handle(final Fragment fragment, final Class<? extends Annotation>... annotationClasses) throws KerException {
+		// - Retrieve object's methods.
+		final Method[] objectMethods = KerAnnotation.retrieveAllMethods(fragment);
+
+		// - For each annotations.
+		for (final Class<? extends Annotation> kerAnnotationClass : annotationClasses) {
+
+			AbstractKerHandler kerHandler;
+
+			try {
+				// - Retrieve it KerHandler.
+				kerHandler = KerAnnotation.retrieveKerHandler(kerAnnotationClass);
+
+				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
+				if (kerHandler.isHandleable(fragment)) {
+					for (final Method method : objectMethods) {
+						if (method.isAnnotationPresent(kerAnnotationClass)) {
+							try {
+								kerHandler.handle(method, fragment);
+							} catch (final Throwable cause) {
+								throw new KerException("Unable to handle method " + method.getName() + " annotated with " + kerAnnotationClass.getName(), cause);
+							}
+						}
+					}
+				}
+
+			} catch (final Throwable cause) {
+				throw new KerException("Unable to handle method annotated with " + kerAnnotationClass.getName(), cause);
 			}
 
 		}
@@ -129,21 +230,24 @@ public class KerAnnotation {
 	 */
 	@SafeVarargs
 	public static void inject(final android.support.v4.app.Fragment fragment, final Bundle savedInstanceState, final Class<? extends Annotation>... kerAnnotationClasses) throws KerException {
+		// - Retrieve object's fields.
+		final Field[] objectFields = KerAnnotation.retrieveAllFields(fragment);
+
 		// - For each annotations.
 		for (final Class<? extends Annotation> kerAnnotationClass : kerAnnotationClasses) {
 
-			AbstractKerInjector kerAnnotationInjector;
+			AbstractKerInjector kerInjector;
 
 			try {
 				// - Retrieve it KerInjector.
-				kerAnnotationInjector = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
+				kerInjector = KerAnnotation.retrieveKerInjector(kerAnnotationClass);
 
 				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
-				if (kerAnnotationInjector.isInjectable(fragment, savedInstanceState)) {
-					for (final Field field : KerAnnotation.retrieveAllFields(fragment)) {
+				if (kerInjector.isInjectable(fragment, savedInstanceState)) {
+					for (final Field field : objectFields) {
 						if (field.isAnnotationPresent(kerAnnotationClass)) {
 							try {
-								kerAnnotationInjector.inject(field, fragment, savedInstanceState);
+								kerInjector.inject(field, fragment, savedInstanceState);
 							} catch (final Throwable cause) {
 								throw new KerException("Unable to inject field " + field.getName() + " annotated with " + kerAnnotationClass.getName(), cause);
 							}
@@ -153,6 +257,48 @@ public class KerAnnotation {
 
 			} catch (final Throwable cause) {
 				throw new KerException("Unable to inject fields annotated with " + kerAnnotationClass.getName(), cause);
+			}
+
+		}
+	}
+
+	/**
+	 * Handles methods of a support fragment.
+	 * 
+	 * @param fragment
+	 *            Support fragment.
+	 * @param annotationClasses
+	 *            Annotations classes concerned by handle.
+	 */
+	@SafeVarargs
+	public static void handle(final android.support.v4.app.Fragment fragment, final Class<? extends Annotation>... annotationClasses) throws KerException {
+		// - Retrieve object's methods.
+		final Method[] objectMethods = KerAnnotation.retrieveAllMethods(fragment);
+
+		// - For each annotations.
+		for (final Class<? extends Annotation> kerAnnotationClass : annotationClasses) {
+
+			AbstractKerHandler kerHandler;
+
+			try {
+				// - Retrieve it KerHandler.
+				kerHandler = KerAnnotation.retrieveKerHandler(kerAnnotationClass);
+
+				// - Try to inject each fields annotated with current annotation in input object using retrieved KerInjector.
+				if (kerHandler.isHandleable(fragment)) {
+					for (final Method method : objectMethods) {
+						if (method.isAnnotationPresent(kerAnnotationClass)) {
+							try {
+								kerHandler.handle(method, fragment);
+							} catch (final Throwable cause) {
+								throw new KerException("Unable to handle method " + method.getName() + " annotated with " + kerAnnotationClass.getName(), cause);
+							}
+						}
+					}
+				}
+
+			} catch (final Throwable cause) {
+				throw new KerException("Unable to handle method annotated with " + kerAnnotationClass.getName(), cause);
 			}
 
 		}
@@ -169,8 +315,8 @@ public class KerAnnotation {
 		AbstractKerInjector kerInjector = null;
 
 		// - Retrieve remembered KerInjector instance if exists.
-		if (KerAnnotation.kerInstances.containsKey(annotationClass)) {
-			kerInjector = KerAnnotation.kerInstances.get(annotationClass);
+		if (KerAnnotation.kerInjectorInstances.containsKey(annotationClass)) {
+			kerInjector = KerAnnotation.kerInjectorInstances.get(annotationClass);
 		}
 		// - Else instantiate it if necessary
 		else {
@@ -182,10 +328,40 @@ public class KerAnnotation {
 			kerInjector = kerInjectorClass.newInstance();
 
 			// - Remember it.
-			KerAnnotation.kerInstances.put(annotationClass, kerInjector);
+			KerAnnotation.kerInjectorInstances.put(annotationClass, kerInjector);
 		}
 
 		return kerInjector;
+	}
+
+	/**
+	 * Retrieve annotation KerHandler from cache or instantiate it if necessary.
+	 * 
+	 * @param annotationClass
+	 *            Annotation class.
+	 * @return Annotation's KerHandler.
+	 */
+	public static AbstractKerHandler retrieveKerHandler(final Class<? extends Annotation> annotationClass) throws InstantiationException, IllegalAccessException {
+		AbstractKerHandler kerHandler = null;
+
+		// - Retrieve remembered KerInjector instance if exists.
+		if (KerAnnotation.kerHandlerInstances.containsKey(annotationClass)) {
+			kerHandler = KerAnnotation.kerHandlerInstances.get(annotationClass);
+		}
+		// - Else instantiate it if necessary
+		else {
+			// - Retrieve KerInjector.
+			final KerHandler kerHandlerAnnotation = annotationClass.getAnnotation(KerHandler.class);
+			final Class<? extends AbstractKerHandler> kerHanderClass = kerHandlerAnnotation.value();
+
+			// - Instantiate it.
+			kerHandler = kerHanderClass.newInstance();
+
+			// - Remember it.
+			KerAnnotation.kerHandlerInstances.put(annotationClass, kerHandler);
+		}
+
+		return kerHandler;
 	}
 
 	/**
@@ -267,6 +443,46 @@ public class KerAnnotation {
 		}
 
 		return fieldsArray;
+	}
+
+	/**
+	 * Retrieve all methods from object.
+	 * 
+	 * @param object
+	 *            Object containing methods.
+	 * @return Object's methods.
+	 */
+	private static Method[] retrieveAllMethods(final Object object) {
+		Method[] methodsArray = null;
+
+		// - Retrieve methods array from cache if exists.
+		if (KerAnnotation.methodsCache.containsKey(object.getClass())) {
+			methodsArray = KerAnnotation.methodsCache.get(object.getClass());
+		}
+		// - Else get methods and cache them.
+		else {
+			// - Aggregate all annotated methods (declared, inherited, etc.).
+			final Set<Method> methods = new HashSet<Method>();
+
+			for (final Method method : object.getClass().getMethods()) {
+				if (method.getAnnotations().length > 0) {
+					methods.add(method);
+				}
+			}
+			for (final Method method : object.getClass().getDeclaredMethods()) {
+				if (method.getAnnotations().length > 0) {
+					methods.add(method);
+				}
+			}
+
+			// - Convert set to array.
+			methodsArray = methods.toArray(new Method[0]);
+
+			// - Cache array.
+			KerAnnotation.methodsCache.put(object.getClass(), methodsArray);
+		}
+
+		return methodsArray;
 	}
 
 }

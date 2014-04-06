@@ -12,7 +12,7 @@ import com.jaouan.android.kerandroid.exception.KerException;
 
 /**
  * 
- * Abstract KerInjector used for inject fields.
+ * Abstract KerInjector used to inject fields.
  * 
  * @author Maxence Jaouan
  * 

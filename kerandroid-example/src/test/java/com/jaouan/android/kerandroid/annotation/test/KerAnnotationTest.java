@@ -7,16 +7,19 @@ import android.util.Log;
 import com.jaouan.android.kerandroid.annotation.KerAnnotation;
 import com.jaouan.android.kerandroid.annotation.field.instancestate.InstanceState;
 import com.jaouan.android.kerandroid.annotation.field.viewbyid.FindViewById;
+import com.jaouan.android.kerandroid.annotation.method.check.CheckedChange;
+import com.jaouan.android.kerandroid.annotation.method.click.Click;
+import com.jaouan.android.kerandroid.annotation.method.text.TextChange;
 import com.jaouan.android.kerandroid.example.BigKerActivity;
 import com.jaouan.android.kerandroid.example.MainActivity;
 import com.jaouan.android.kerandroid.exception.KerException;
 
 /**
  * 10 000 iterations (20 views, 20 instance states) testMassiveInject() (first) : ~4350ms testMassiveInject() (cached) : ~3650ms
+ * 10 000 iterations (40 listeners) testMassiveHandle() (first) : ~7450ms testMassiveInject() (cached) : ~7000ms
  * 
  * 10 iterations 5ms
  */
-@SuppressWarnings("unchecked")
 public class KerAnnotationTest extends android.test.ActivityUnitTestCase<BigKerActivity> {
 
 	private BigKerActivity activity;
@@ -37,15 +40,36 @@ public class KerAnnotationTest extends android.test.ActivityUnitTestCase<BigKerA
 		final Bundle bundle = new Bundle();
 		activity.onSaveInstanceState(bundle);
 
-		final long startTime = System.currentTimeMillis();
+		for (int u = 0; u < 10; u++) {
+			final long startTime = System.currentTimeMillis();
 
-		for (int i = 0; i < 10; i++) {
-			KerAnnotation.inject(activity, bundle, //
-					InstanceState.class, //
-					FindViewById.class //
-					);
+			for (int i = 0; i < 10000; i++) {
+				KerAnnotation.inject(activity, bundle, //
+						InstanceState.class, //
+						FindViewById.class //
+						);
+			}
+
+			Log.i("timer", "testMassiveInject() : " + (System.currentTimeMillis() - startTime) + "ms");
 		}
+	}
 
-		Log.i("timer", "testMassiveInject() : " + (System.currentTimeMillis() - startTime) + "ms");
+	public void testMassiveHandle() throws KerException {
+		final Bundle bundle = new Bundle();
+		activity.onSaveInstanceState(bundle);
+
+		for (int u = 0; u < 10; u++) {
+			final long startTime = System.currentTimeMillis();
+
+			for (int i = 0; i < 10000; i++) {
+				KerAnnotation.handle(activity, //
+						Click.class, //
+						CheckedChange.class, //
+						TextChange.class //
+						);
+			}
+
+			Log.i("timer", "testMassiveHandle() : " + (System.currentTimeMillis() - startTime) + "ms");
+		}
 	}
 }

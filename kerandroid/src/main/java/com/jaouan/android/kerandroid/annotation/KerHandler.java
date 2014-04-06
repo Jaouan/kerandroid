@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 
- * KerInjector annotation that specify AbstractKerInjector implementation's class to use for injection.
+ * KerHandler annotation that specify AbstractKerHandle implementation's class to use for handling.
  * 
  * @author Maxence Jaouan
  * 
@@ -16,13 +16,13 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
-public @interface KerInjector {
+public @interface KerHandler {
 
 	/**
-	 * Get KerInjector's class to use for injection.
+	 * Get KerHander implementation's class to use for injection.
 	 * 
-	 * @return KerInjector implementation's class to use for injection
+	 * @return KerHandler implementation's class to use for injection
 	 */
-	Class<? extends AbstractKerInjector> value();
+	Class<? extends AbstractKerHandler> value();
 
 }
