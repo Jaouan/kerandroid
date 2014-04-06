@@ -170,6 +170,7 @@ Here a performance comparison (tested on Samsung GT-N8010) :
  - Injecting 10 times the same activity (400 injections) takes ~5ms, while it takes ~3ms with "classic" solution.
  - Injecting 10 000 times the same activity (400 000 injections) takes ~4.3s at first execution then ~3.5s, while it takes only ~1s with "classic" solution.
  - Handling 10 000 times 40 listeners takes ~7s against ~3s with "classic" solution.
+
 Then, using KerAndroid on Android application should no spoil user experience even on little device.
 
 
