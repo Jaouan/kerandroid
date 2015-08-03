@@ -5,32 +5,12 @@ KerAndroid is a tiny Android library that helps you to speed up and to simplify 
 Gradle template.
 ```
 repositories {
-	maven { url "https://github.com/Jaouan/mvn-repo/raw/master" }
+	maven { url "https://jitpack.io" }
 }
 dependencies {
-	compile 'com.jaouan:kerandroid:+'
+	compile 'com.github.jaouan:kerandroid:1.0.1'
 }
 ```
-
-Maven template
-```
-<repositories>
-	<repository>
-		<id>jaouan-repo</id>
-		<name>Jaouan repository</name>
-		<url>https://github.com/Jaouan/mvn-repo/raw/master</url>
-	</repository>
-</repositories>
-<dependencies>
-	<dependency>
-		<groupId>com.jaouan</groupId>
-		<artifactId>kerandroid</artifactId>
-		<version>0.0.1</version>
-	</dependency>
-</dependencies>
-```
-Or download JAR at
-https://github.com/Jaouan/mvn-repo/blob/master/com/jaouan/kerandroid/0.0.1/kerandroid-0.0.1.jar
 
 # Using examples
 ## Activity
@@ -99,6 +79,12 @@ public class ExampleFragment extends KerFragment {
 
     @FindViewById(R.id.textView1) // <- Inject view instance.
     protected TextView textView;
+
+    @Argument
+    protected String myArgument;
+
+    @Argument("argument-name");
+    protected String mySecondArgument;
 
     @Override
     public void onStart() {
