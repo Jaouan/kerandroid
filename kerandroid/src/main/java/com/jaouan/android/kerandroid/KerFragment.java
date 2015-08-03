@@ -1,6 +1,8 @@
 package com.jaouan.android.kerandroid;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jaouan.android.kerandroid.annotation.KerAnnotation;
+import com.jaouan.android.kerandroid.annotation.field.argument.Argument;
 import com.jaouan.android.kerandroid.annotation.field.instancestate.InstanceState;
 import com.jaouan.android.kerandroid.annotation.field.logger.ClassLogger;
 import com.jaouan.android.kerandroid.annotation.field.viewbyid.FindViewById;
@@ -23,6 +26,7 @@ import com.jaouan.android.kerandroid.exception.KerException;
  * @author Maxence Jaouan
  * 
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class KerFragment extends Fragment {
 
 	/**
@@ -36,7 +40,8 @@ public class KerFragment extends Fragment {
 			// - Inject...
 			KerAnnotation.inject(this, savedInstanceState, //
 					ClassLogger.class, // ... logger, ...
-					InstanceState.class); // ... instance state.
+					InstanceState.class, // ... instance state, ...
+					Argument.class); // ... and arguments.
 		} catch (final KerException kerException) {
 			this.onKerException(kerException);
 		}
