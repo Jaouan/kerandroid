@@ -92,7 +92,7 @@ public class ArgumentKerInjector extends AbstractKerInjector {
 	 */
 	private String getFieldId(final Field field) {
 		String fieldId = getAnnotationValue(field);
-		if(fieldId == null){
+		if(fieldId == null || "" == fieldId){
 			fieldId = field.getName();
 		}
 		return fieldId;
@@ -107,7 +107,7 @@ public class ArgumentKerInjector extends AbstractKerInjector {
 	 */
 	private String getAnnotationValue(final Field field) {
 		String value = (String) this.getFromCache(field);
-		if (null == value || "" == value) {
+		if (null == value) {
 			// - Find view by id.
 			final Argument findViewById = field.getAnnotation(Argument.class);
 			value = findViewById.value();
