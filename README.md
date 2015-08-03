@@ -8,7 +8,7 @@ repositories {
 	maven { url "https://jitpack.io" }
 }
 dependencies {
-	compile 'com.github.jaouan:kerandroid:1.0.0'
+	compile 'com.github.jaouan:kerandroid:1.0'
 }
 ```
 
