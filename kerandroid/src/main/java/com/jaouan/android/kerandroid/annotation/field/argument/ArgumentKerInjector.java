@@ -92,7 +92,7 @@ public class ArgumentKerInjector extends AbstractKerInjector {
 	 */
 	private String getFieldId(final Field field) {
 		String fieldId = getAnnotationValue(field);
-		if(fieldId != null){
+		if(fieldId == null){
 			fieldId = field.getName();
 		}
 		return fieldId;
