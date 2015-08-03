@@ -1,63 +1,20 @@
-apply plugin: 'java'
-// apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+apply plugin: 'com.android.library'
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
-group = 'com.jaouan'
-version = '0.0.1'
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'KerAndroid', 'Implementation-Version': version
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 22
     }
 }
-
-configurations{
-    compileOnly
-}
-
-sourceSets {
-  main {
-    compileClasspath += configurations.compileOnly
-  }
-  test {
-    compileClasspath += configurations.compileOnly
-  }
-}
-
-// idea {
-//   module {
-//     scopes.PROVIDED.plus += configurations.compileOnly
-//   }
-// }
-
-// eclipse {
-//   classpath {
-//     plusConfigurations += configurations.compileOnly
-//   }
-// }
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly 'com.google.android:android:+'
-    compileOnly 'com.google.android:support-v4:+'
-    compileOnly 'org.slf4j:slf4j-simple:+'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url "maven"
-        }
-    }
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'org.slf4j:slf4j-simple:1.7.7'
 }

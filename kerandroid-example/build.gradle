@@ -1,48 +1,18 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:+'
-    }
-}
-
-apply plugin: 'android'
-// apply plugin: 'eclipse'
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-sourceSets {
-  main {
-    compileClasspath += configurations.compile
-  }
-  test {
-    compileClasspath += configurations.compile
-    compileClasspath += configurations.testCompile
-  }
-}
-
-// eclipse {
-//   classpath {
-//     plusConfigurations += configurations.compile
-//     plusConfigurations += configurations.testCompile
-//   }
-// }
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 16
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -55,10 +25,7 @@ repositories {
 
 dependencies {
     compile 'com.jaouan:kerandroid:0.0.1'
-	compile 'com.google.android:support-v4:+'
-	compile 'org.slf4j:slf4j-api:+'
-	compile 'com.github.tony19:logback-android-classic:+'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-  
-    testCompile 'com.google.android:android-test:+'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+	compile 'org.slf4j:slf4j-api:1.7.12'
+	compile 'com.github.tony19:logback-android-classic:1.1.1-4'
 }
