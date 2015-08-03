@@ -26,6 +26,6 @@ public @interface Argument {
      *
      * @return Resource id.
      */
-    String value();
+    String value() default "";
 
 }
